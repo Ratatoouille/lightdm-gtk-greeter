@@ -3359,8 +3359,13 @@ main (int argc, char **argv)
 
     if (lightdm_greeter_get_hide_users_hint (greeter))
     {
-        set_user_image (NULL);
-        start_authentication ("*other");
+        gchar *last_user;
+        last_user = config_get_string (STATE_SECTION_GREETER, STATE_KEY_LAST_USER, NULL);
+        gtk_widget_show (GTK_WIDGET (username_entry));
+        gtk_widget_show (GTK_WIDGET (cancel_button));
+        gtk_entry_set_text(username_entry, last_user);
+        start_authentication(last_user);
+        g_free(last_user);
     }
     else
     {
